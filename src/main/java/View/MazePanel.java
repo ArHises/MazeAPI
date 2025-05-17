@@ -1,4 +1,7 @@
 package View;
 
-public class MazePanel {
+import javax.swing.*;
+
+public class MazePanel extends JPanel {
+    // TODO: responsible for drawing the maze and the solution path...
 }

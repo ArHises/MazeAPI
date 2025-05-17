@@ -4,11 +4,25 @@ public class MazePoint {
 
     private int x;
     private int y;
-    private boolean isWhite;
+    private boolean white;
 
-    public MazePoint(int x, int y, boolean isWhite) {
+    public MazePoint() {}
+
+    public MazePoint(int x, int y, boolean white) {
         this.x = x;
         this.y = y;
-        this.isWhite = isWhite;
+        this.white = white;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public boolean isWhite() {
+        return white;
     }
 }

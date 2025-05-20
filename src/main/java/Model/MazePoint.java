@@ -6,8 +6,6 @@ public class MazePoint {
     private int y;
     private boolean white;
 
-    public MazePoint() {}
-
     public MazePoint(int x, int y, boolean white) {
         this.x = x;
         this.y = y;
@@ -24,5 +22,10 @@ public class MazePoint {
 
     public boolean isWhite() {
         return white;
+    }
+
+    @Override
+    public String toString() {
+        return "x: " + x + ", y: " + y;
     }
 }

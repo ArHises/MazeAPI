@@ -27,16 +27,8 @@ public class Maze {
     }
 
     public boolean[][] buildMazeGrid(List<MazePoint> points, int width, int height) {
-        boolean[][] grid = new boolean[height][width]; // rows = height, cols = width
-        for (MazePoint point : points) {
-            if (point.isWhite()) {
-                int x = point.getX();
-                int y = point.getY();
-                if (x >= 0 && x < width && y >= 0 && y < height) {
-                    grid[y][x] = true; // mark white cell
-                }
-            }
-        }
+        boolean[][] grid = new boolean[height][width];
+        points.forEach(point -> grid[point.getY()][point.getX()] = true);
         return grid;
     }
 

@@ -1,8 +1,5 @@
 package Model;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,36 +13,69 @@ public class MazeSolver {
 
     public List<MazePoint> solveMaze() {
         List<MazePoint> path = new LinkedList<>();
-        int[] start = {0, 0};
-        int[] end = {maze.getWidth() - 1, maze.getHeight() - 1};
-        int[] pointer = start;
+        MazePoint start = new MazePoint(0,0,true);
+        MazePoint end = new MazePoint(maze.getWidth() - 1, maze.getHeight() - 1, true);
+        MazePoint pointer = start;
 
+        path.add(start);
         int steps = 0;
 
-        while (!Arrays.equals(pointer, end) && steps < 1000) {
-            if (isValidMove(pointer[0],pointer[1] + 1) && !isExit(path, pointer[0], pointer[1] + 1)) {
-                pointer[1]++;
-                path.add(new MazePoint(pointer[0], pointer[1], true));
-            } else if (isValidMove(pointer[0] + 1, pointer[1]) && !isExit(path, pointer[0] + 1, pointer[1])) {
-                pointer[0]++;
-                path.add(new MazePoint(pointer[0], pointer[1], true));
-            } else if (isValidMove(pointer[0], pointer[1] - 1) && !isExit(path, pointer[0], pointer[1] - 1)) {
-                pointer[1]--;
-                path.add(new MazePoint(pointer[0], pointer[1], true));
-            } else if (isValidMove(pointer[0] - 1, pointer[1]) && !isExit(path, pointer[0] - 1, pointer[1])) {
-                pointer[0]--;
-                path.add(new MazePoint(pointer[0], pointer[1], true));
+        while (!pointer.equals(end) && steps < 200) {
+            if (isRight(pointer, path)) {
+
+                pointer.setX(pointer.getX() + 1);
+                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
+
+            } else if (isDown(pointer, path)) {
+
+                pointer.setY(pointer.getY() + 1);
+                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
+
+            } else if (isLeft(pointer, path)) {
+
+                pointer.setX(pointer.getX() - 1);
+                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
+
+            } else if (isUp(pointer, path)) {
+
+                pointer.setY(pointer.getY() - 1);
+                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
+
             } else {
-                System.out.println("No valid moves available from " + Arrays.toString(pointer));
+                if (!path.isEmpty()){
+                    pointer = path.removeLast();
+                    continue;
+                }
+                System.out.println("No path found.");
                 break;
             }
             steps++;
         }
         System.out.println("Steps taken: " + steps);
-        if (steps >= 1000) {
-            System.out.println("Reached max steps, stopping.");
+        if (steps >= 200) {
+            System.out.println("Failed at: " + path.getLast());
         }
         return path;
+    }
+
+    private boolean isRight(MazePoint pointer, List<MazePoint> path) {
+        return (isValidMove(pointer.getX() + 1, pointer.getY())
+                && !isExit(path, pointer.getX() + 1, pointer.getY()));
+    }
+
+    private boolean isLeft(MazePoint pointer, List<MazePoint> path) {
+        return (isValidMove(pointer.getX() - 1, pointer.getY())
+                && !isExit(path, pointer.getX() - 1, pointer.getY()));
+    }
+
+    private boolean isDown(MazePoint pointer, List<MazePoint> path) {
+        return (isValidMove(pointer.getX(), pointer.getY() + 1)
+                && !isExit(path, pointer.getX(), pointer.getY() + 1));
+    }
+
+    private boolean isUp(MazePoint pointer, List<MazePoint> path) {
+        return (isValidMove(pointer.getX() , pointer.getY() - 1)
+                && !isExit(path, pointer.getX(), pointer.getY()  - 1));
     }
 
     public boolean isValidMove(int x, int y) {

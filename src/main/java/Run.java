@@ -14,24 +14,26 @@ public class Run {
     public static void main(String[] args) {
 
         int count = 0;
+        int tries = 10;
 
+        for (int i = 0; i < tries; i++) {
 
-
-        for (int i = 0; i < 20; i++) {
-            List<MazePoint> points =
-                    ApiFetcher.fetchMazePoints(WIDTH, HEIGHT);
-            Maze maze =
-                    new Maze(points, WIDTH, HEIGHT);
-//            System.out.println(maze);
+            List<MazePoint> points = ApiFetcher.fetchMazePoints(WIDTH, HEIGHT);
+            Maze maze = new Maze(points, WIDTH, HEIGHT);
 
             MazeSolver mazeSolver = new MazeSolver(maze);
             List<MazePoint> path = mazeSolver.solveMaze();
-            if (path.get(path.size() - 1).getY() == maze.getHeight() - 1
-                    && path.get(path.size() - 1).getX() == maze.getWidth() - 1) {
+
+            if ( !path.isEmpty() && (path.getLast().getY() == maze.getHeight() - 1
+                    && path.getLast().getX() == maze.getWidth() - 1)) {
                 count++;
+            } else {
+                System.out.println(maze);
+                Maze solve = new Maze(path, WIDTH, HEIGHT);
+                System.out.println(solve);
             }
             System.out.println(i + "...");
         }
-        System.out.println("Success rate: " + (float) (count * 100 / 20) + "%");
+        System.out.println("Success rate: " + (float) (count * 100 / tries) + "%");
     }
 }

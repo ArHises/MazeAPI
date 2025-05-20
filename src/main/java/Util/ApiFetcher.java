@@ -3,12 +3,18 @@ package Util;
 import Model.MazePoint;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApiFetcher {
@@ -25,17 +31,29 @@ public class ApiFetcher {
             if (height < 5 || height > 100) height = 30;
 
             String urlString = BASE_URL + "?width=" + width + "&height=" + height;
-            URL url = new URL(urlString);
 
-            InputStreamReader reader = new InputStreamReader(url.openStream());
+            OkHttpClient client = new OkHttpClient();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+            Request request = new Request.Builder()
+                    .url(urlString)
+                    .build();
 
-            // Parse JSON array into List<MazePoint>
-            return new Gson().fromJson(
-                    reader,                           // the JSON input
-                    new TypeToken<List<MazePoint>>() {}.getType()  // tells Gson it's a list of MazePoints
-            );
+            Response response = client.newCall(request).execute();
+            String responseBody = response.body().string();
+
+            JSONArray jsonArray = new JSONArray(responseBody);
+            List<MazePoint> points = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                int x = obj.getInt("x");
+                int y = obj.getInt("y");
+                boolean white = obj.getBoolean("white");
+
+                points.add(new MazePoint(x,y,white));
+            }
+
+            return points;
 
         } catch (Exception e) {
             System.err.println("Error fetching maze: " + e.getMessage());

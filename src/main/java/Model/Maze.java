@@ -30,8 +30,8 @@ public class Maze {
         boolean[][] grid = new boolean[height][width]; // rows = height, cols = width
         for (MazePoint point : points) {
             if (point.isWhite()) {
-                int x = (int) point.getX();
-                int y = (int) point.getY();
+                int x = point.getX();
+                int y = point.getY();
                 if (x >= 0 && x < width && y >= 0 && y < height) {
                     grid[y][x] = true; // mark white cell
                 }

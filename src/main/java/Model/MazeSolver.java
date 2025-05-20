@@ -1,7 +1,6 @@
 package Model;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class MazeSolver {
 
@@ -11,88 +10,50 @@ public class MazeSolver {
         this.maze = maze;
     }
 
-    public List<MazePoint> solveMaze() {
-        List<MazePoint> path = new LinkedList<>();
-        MazePoint start = new MazePoint(0,0,true);
+    public List<MazePoint> solveMazeBFS() {
+        Queue<List<MazePoint>> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[maze.getWidth()][maze.getHeight()];
+
+        MazePoint start = new MazePoint(0, 0, true);
         MazePoint end = new MazePoint(maze.getWidth() - 1, maze.getHeight() - 1, true);
-        MazePoint pointer = start;
 
-        path.add(start);
-        int steps = 0;
+        List<MazePoint> initialPath = new LinkedList<>();
+        initialPath.add(start);
+        queue.add(initialPath);
+        visited[start.getX()][start.getY()] = true;
 
-        while (!pointer.equals(end) && steps < 200) {
-            if (isRight(pointer, path)) {
+        while (!queue.isEmpty()) {
+            List<MazePoint> path = queue.poll();
+            MazePoint current = path.getLast();
 
-                pointer.setX(pointer.getX() + 1);
-                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
-
-            } else if (isDown(pointer, path)) {
-
-                pointer.setY(pointer.getY() + 1);
-                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
-
-            } else if (isLeft(pointer, path)) {
-
-                pointer.setX(pointer.getX() - 1);
-                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
-
-            } else if (isUp(pointer, path)) {
-
-                pointer.setY(pointer.getY() - 1);
-                path.add(new MazePoint(pointer.getX(), pointer.getY(), true));
-
-            } else {
-                if (!path.isEmpty()){
-                    pointer = path.removeLast();
-                    continue;
-                }
-                System.out.println("No path found.");
-                break;
+            if (current.equals(end)) {
+                return path; // Shortest path found
             }
-            steps++;
+
+            // Explore neighbors: right, down, left, up
+            int[] dx = {1, 0, -1, 0};
+            int[] dy = {0, 1, 0, -1};
+
+            for (int dir = 0; dir < 4; dir++) {
+                int newX = current.getX() + dx[dir];
+                int newY = current.getY() + dy[dir];
+
+                if (isValidMove(newX, newY) && !visited[newX][newY]) {
+                    visited[newX][newY] = true;
+                    List<MazePoint> newPath = new LinkedList<>(path);
+                    newPath.add(new MazePoint(newX, newY, true));
+                    queue.add(newPath);
+                }
+            }
         }
-        System.out.println("Steps taken: " + steps);
-        if (steps >= 200) {
-            System.out.println("Failed at: " + path.getLast());
-        }
-        return path;
+
+        return new LinkedList<>(); // No path found
     }
 
-    private boolean isRight(MazePoint pointer, List<MazePoint> path) {
-        return (isValidMove(pointer.getX() + 1, pointer.getY())
-                && !isExit(path, pointer.getX() + 1, pointer.getY()));
-    }
-
-    private boolean isLeft(MazePoint pointer, List<MazePoint> path) {
-        return (isValidMove(pointer.getX() - 1, pointer.getY())
-                && !isExit(path, pointer.getX() - 1, pointer.getY()));
-    }
-
-    private boolean isDown(MazePoint pointer, List<MazePoint> path) {
-        return (isValidMove(pointer.getX(), pointer.getY() + 1)
-                && !isExit(path, pointer.getX(), pointer.getY() + 1));
-    }
-
-    private boolean isUp(MazePoint pointer, List<MazePoint> path) {
-        return (isValidMove(pointer.getX() , pointer.getY() - 1)
-                && !isExit(path, pointer.getX(), pointer.getY()  - 1));
-    }
-
-    public boolean isValidMove(int x, int y) {
+    private boolean isValidMove(int x, int y) {
         if (x < 0 || x >= maze.getWidth() || y < 0 || y >= maze.getHeight()) {
             return false;
         }
         return maze.isWhite(x, y);
-    }
-
-    public boolean isExit(List<MazePoint> path, int x, int y) {
-        boolean exist = false;
-        for (MazePoint point : path) {
-            if (point.getX() == x && point.getY() == y) {
-                exist = true;
-                break;
-            }
-        }
-        return exist;
     }
 }

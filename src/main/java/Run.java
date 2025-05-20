@@ -21,7 +21,7 @@ public class Run {
             Maze maze = new Maze(points, WIDTH, HEIGHT);
 
             MazeSolver mazeSolver = new MazeSolver(maze);
-            List<MazePoint> path = mazeSolver.solveMazeBFS();
+            List<MazePoint> path = mazeSolver.solveMaze();
 
             if (!path.isEmpty() && (path.get(path.size() - 1).getY() == maze.getHeight() - 1
                     && path.get(path.size() - 1).getX() == maze.getWidth() - 1)) {
@@ -42,7 +42,7 @@ public class Run {
         Maze maze = new Maze(points, WIDTH, HEIGHT);
 
         MazeSolver mazeSolver = new MazeSolver(maze);
-        List<MazePoint> path = mazeSolver.solveMazeBFS();
+        List<MazePoint> path = mazeSolver.solveMaze();
 
         System.out.println(maze);
         Maze solve = new Maze(path, WIDTH, HEIGHT);

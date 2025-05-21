@@ -18,6 +18,13 @@ public class ApiFetcher {
 
     private static final String BASE_URL = "https://app.seker.live/fm1/get-points";
 
+    /**
+     * Fetches maze points from the API.
+     *
+     * @param width  The width of the maze (default is 30 if out of range).
+     * @param height The height of the maze (default is 30 if out of range).
+     * @return A list of MazePoint objects representing the maze points.
+     */
     public static List<MazePoint> fetchMazePoints(int width, int height) {
         try {
             if (width < 5 || width > 100) width = 30;

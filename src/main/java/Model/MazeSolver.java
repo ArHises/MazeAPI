@@ -10,6 +10,11 @@ public class MazeSolver {
         this.maze = maze;
     }
 
+    /**
+     * Solves the maze using BFS algorithm.
+     * @return List of MazePoint representing the path from start to end.
+     * @deprecated
+     */
     public List<MazePoint> solveMazeBFS() {
         Queue<List<MazePoint>> queue = new LinkedList<>();
         boolean[][] visited = new boolean[maze.getWidth()][maze.getHeight()];
@@ -46,10 +51,14 @@ public class MazeSolver {
                 }
             }
         }
-
         return new LinkedList<>(); // No path found
     }
 
+    /**
+     * Solves the maze using simple DFS algorithm.
+     * This method is not optimal and may not find the shortest path.
+     * @return List of MazePoint representing the path from start to end.
+     */
     public List<MazePoint> solveMaze() {
         LinkedList<MazePoint> path = new LinkedList<>();
         LinkedList<MazePoint> passed = new LinkedList<>();
@@ -63,10 +72,9 @@ public class MazeSolver {
 
         while (!path.isEmpty() && steps < 1000) {
             MazePoint pointer = path.getLast();
-//            System.out.print(pointer);
 
             if (pointer.equals(end)) {
-                System.out.println("Steps taken: " + steps);
+                System.out.println("Finished: Steps taken - " + steps);
                 return path; // Found the exit
             }
 
@@ -91,10 +99,6 @@ public class MazeSolver {
                 // Backtrack if no direction is valid
                 path.removeLast();
             }
-
-//            if (!path.isEmpty()) {
-//                System.out.println(" -> " + path.getLast());
-//            }
             steps++;
         }
 
@@ -124,7 +128,7 @@ public class MazeSolver {
                 && !isExit(path, pointer.getX(), pointer.getY()  - 1));
     }
 
-    public boolean isExit(List<MazePoint> path, int x, int y) {
+    private boolean isExit(List<MazePoint> path, int x, int y) {
         boolean exist = false;
         for (MazePoint point : path) {
             if (point.getX() == x && point.getY() == y) {

@@ -23,11 +23,10 @@ public class Run {
             MazeSolver mazeSolver = new MazeSolver(maze);
             List<MazePoint> path = mazeSolver.solveMaze();
 
-            if (!path.isEmpty() && (path.get(path.size() - 1).getY() == maze.getHeight() - 1
-                    && path.get(path.size() - 1).getX() == maze.getWidth() - 1)) {
+            if (!path.isEmpty() && (path.getLast().getY() == maze.getHeight() - 1
+                    && path.getLast().getX() == maze.getWidth() - 1)) {
                 count++;
             }
-            System.out.print(".");
         }
 
         return ((float) count / tries) * 100;
@@ -35,7 +34,7 @@ public class Run {
 
     public static void main(String[] args) {
 
-        System.out.println("\nSuccess Rate: " + calculateSuccessRate(10) + "%");
+        System.out.println("\nSuccess Rate: " + calculateSuccessRate(20) + "%");
 
         System.out.println("Example Maze:");
         List<MazePoint> points = ApiFetcher.fetchMazePoints(WIDTH, HEIGHT);

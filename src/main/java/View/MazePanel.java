@@ -11,6 +11,7 @@ public class MazePanel extends JPanel {
     private Image image;
     private MazeController mazeController;
     private List<MazePoint> solutionPath;
+    private final double scaleFactor = 0.6; //  קובע כמה להקטין את המבוך (60% מהגודל המקורי)
 
     public MazePanel() {
         this.mazeController
@@ -19,34 +20,52 @@ public class MazePanel extends JPanel {
         List<MazePoint> solution = mazeController.getMazeSolver().solveMaze();
         setSolutionPath(solution);
 
+
+
+        //חשב את הרוחב והגובה המוקטנים לפי קנה המידה
+        int scaledWidth = (int)(mazeController.getImageWidth() * scaleFactor);
+        int scaledHeight = (int)(mazeController.getImageHeight() * scaleFactor);
+
+        this.setPreferredSize(new Dimension(scaledWidth, scaledHeight)); // עוזר ל pack (עדיין לא סגורה עלזה)
+
     }
 
 
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(this.image, 0, 0, getWidth(), getHeight(), this);
+
+
+        //מחשב את גודל התמונה אחרי ההקטנה
+        int scaledWidth = (int)(image.getWidth(this) * scaleFactor);
+        int scaledHeight = (int)(image.getHeight(this) * scaleFactor);
+
+        g.drawImage(this.image, 0, 0, scaledWidth , scaledHeight ,this); //מצייר את התמונה המוקטנת של המבוך
 
         if (solutionPath != null && solutionPath.size() > 1) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setColor(new Color(0, 255, 0));
-            g2.setStroke(new BasicStroke(4));
+            g2.setStroke(new BasicStroke(3));
 
-            int cellWidth = getWidth() / mazeController.getMaze().getWidth();
-            int cellHeight = getHeight() / mazeController.getMaze().getHeight();
+           int cellSize = mazeController.getCellSize();
 
-            System.out.println("cell w: " + cellWidth + ", cell height: " + cellHeight);
+            System.out.println("cell w: " + cellSize + ", cell height: " + cellSize);
+
+            //מחשב גודל תא מוקטן לפתרון (קו ירוק)
+            int cellWidth = (int)((mazeController.getCellSize()) * scaleFactor);
+            int cellHeight = (int)((mazeController.getCellSize()) * scaleFactor);
 
             for (int i = 0; i < solutionPath.size() - 1; i++) {
                 MazePoint p1 = solutionPath.get(i);
                 MazePoint p2 = solutionPath.get(i + 1);
 
-                int x1 = p1.getX() * cellWidth + cellWidth / 2;
-                int y1 = p1.getY() * cellHeight + cellHeight / 2;
-                int x2 = p2.getX() * cellWidth + cellWidth / 2;
-                int y2 = p2.getY() * cellHeight + cellHeight /2;
+                //מחשב מיקום ממרכז התא לפי קנה המידה
+                int x1 = (int)(p1.getX() * cellWidth + cellWidth / 2);
+                int y1 = (int)(p1.getY() * cellHeight + cellHeight / 2);
+                int x2 = (int)(p2.getX() * cellWidth + cellWidth / 2);
+                int y2 = (int)(p2.getY() * cellHeight + cellHeight / 2);
 
-                g2.drawLine(x1, y1 , x2, y2);
+                g2.drawLine(x1, y1 , x2, y2); //מצייר את הקו הירוק בין נקודות הפתרון
             }
         }
     }
@@ -60,4 +79,5 @@ public class MazePanel extends JPanel {
         this.solutionPath = solutionPath;
         repaint(); // מבקש לצייר מחדש עם הפתרון החדש
     }
+
 }

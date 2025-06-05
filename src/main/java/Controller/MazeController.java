@@ -18,6 +18,7 @@ public class MazeController {
     private Maze maze;
     private MazeSolver mazeSolver;
     private MazePanel mazePanel;
+    private final int cellSize = 20;
 
     public MazeController(int width , int height){
         this.WIDTH = width;
@@ -36,7 +37,6 @@ public class MazeController {
     }
 
     public BufferedImage createMazeImage(){
-        int cellSize = 20;
 
         BufferedImage img
                 = new BufferedImage(WIDTH * cellSize, HEIGHT * cellSize, BufferedImage.TYPE_INT_RGB);
@@ -74,4 +74,18 @@ public class MazeController {
     public MazePanel getMazePanel() {
         return mazePanel;
     }
+
+    public int getCellSize() {
+        return 20; // או מה שבחרת בתור cellSize ביצירת התמונה
+    }
+
+    public int getImageWidth() {
+        return maze.getWidth() * getCellSize();
+    }
+
+    public int getImageHeight() {
+        return maze.getHeight() * getCellSize();
+    }
+
+
 }

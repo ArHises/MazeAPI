@@ -12,10 +12,11 @@ public class MazePanel extends JPanel {
     private MazeController mazeController;
     private List<MazePoint> solutionPath;
     private final double scaleFactor = 0.6; //  קובע כמה להקטין את המבוך (60% מהגודל המקורי)
+    private final int mazeSize = 50; // גודל של המבוךw
 
     public MazePanel() {
         this.mazeController
-                = new MazeController(50 , 50);
+                = new MazeController(mazeSize , mazeSize);
         this.image = mazeController.createMazeImage();
 
         //חשב את הרוחב והגובה המוקטנים לפי קנה המידה

@@ -14,14 +14,18 @@ public class MazeController {
 
     private int WIDTH;
     private int HEIGHT;
-    private BufferedImage image;
     private Maze maze;
     private MazeSolver mazeSolver;
-    private final int cellSize = 20;
+    private final int cellSize;
+    private static final int IMAGE_SIZE = 750; // גודל התמונה המקסימלי
 
     public MazeController(int width , int height){
         this.WIDTH = width;
         this.HEIGHT = height;
+
+        this.cellSize =
+                Math.min(IMAGE_SIZE / WIDTH
+                        , IMAGE_SIZE / HEIGHT); // מחשב את גודל התא המינימלי כדי שהתמונה תתאים לגודל המקסימלי
 
         List<MazePoint> points = ApiFetcher.fetchMazePoints(WIDTH, HEIGHT);
 
@@ -35,10 +39,12 @@ public class MazeController {
 
     public BufferedImage createMazeImage(){
 
-        BufferedImage img
-                = new BufferedImage(WIDTH * cellSize, HEIGHT * cellSize, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = img.createGraphics();
+        BufferedImage img =
+                new BufferedImage(WIDTH * cellSize
+                , HEIGHT * cellSize
+                , BufferedImage.TYPE_INT_RGB);
 
+        Graphics2D g = img.createGraphics();
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, img.getWidth(), img.getHeight());
 
@@ -60,7 +66,7 @@ public class MazeController {
     }
 
     public int getCellSize() {
-        return this.cellSize; // או מה שבחרת בתור cellSize ביצירת התמונה
+        return this.cellSize;
     }
 
     public int getImageWidth() {

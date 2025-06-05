@@ -36,16 +36,10 @@ public class MainFrame extends JFrame {
         buttonPanel.add(checkSolutionBtn);
         this.add(buttonPanel, BorderLayout.SOUTH);
 
-
         this.add(mazePanel);
         this.pack(); // מתאים את החלון לגודל של הפאנל חשוב כשמשתמשים ב preferredSize
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
-
-
-
-
     }
 
 }

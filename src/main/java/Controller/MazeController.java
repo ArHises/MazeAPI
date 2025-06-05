@@ -17,7 +17,6 @@ public class MazeController {
     private BufferedImage image;
     private Maze maze;
     private MazeSolver mazeSolver;
-    private MazePanel mazePanel;
     private final int cellSize = 20;
 
     public MazeController(int width , int height){
@@ -25,8 +24,6 @@ public class MazeController {
         this.HEIGHT = height;
 
         List<MazePoint> points = ApiFetcher.fetchMazePoints(WIDTH, HEIGHT);
-        System.out.println(points.toArray());
-
 
         if (points == null){
             System.err.println("error");
@@ -58,25 +55,12 @@ public class MazeController {
         return img;
     }
 
-
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    public Maze getMaze() {
-        return maze;
-    }
-
     public MazeSolver getMazeSolver() {
         return mazeSolver;
     }
 
-    public MazePanel getMazePanel() {
-        return mazePanel;
-    }
-
     public int getCellSize() {
-        return 20; // או מה שבחרת בתור cellSize ביצירת התמונה
+        return this.cellSize; // או מה שבחרת בתור cellSize ביצירת התמונה
     }
 
     public int getImageWidth() {

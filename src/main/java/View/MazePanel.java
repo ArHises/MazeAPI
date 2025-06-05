@@ -15,12 +15,8 @@ public class MazePanel extends JPanel {
 
     public MazePanel() {
         this.mazeController
-                = new MazeController(40 , 40);
+                = new MazeController(50 , 50);
         this.image = mazeController.createMazeImage();
-        List<MazePoint> solution = mazeController.getMazeSolver().solveMaze();
-        setSolutionPath(solution);
-
-
 
         //חשב את הרוחב והגובה המוקטנים לפי קנה המידה
         int scaledWidth = (int)(mazeController.getImageWidth() * scaleFactor);
@@ -30,11 +26,8 @@ public class MazePanel extends JPanel {
 
     }
 
-
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
 
         //מחשב את גודל התמונה אחרי ההקטנה
         int scaledWidth = (int)(image.getWidth(this) * scaleFactor);

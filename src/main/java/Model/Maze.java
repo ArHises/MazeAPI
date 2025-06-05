@@ -22,10 +22,6 @@ public class Maze {
         return maze.length;
     }
 
-    public boolean[][] getGrid() {
-        return maze;
-    }
-
     public boolean[][] buildMazeGrid(List<MazePoint> points, int width, int height) {
         boolean[][] grid = new boolean[height][width];
         points.forEach(point -> grid[point.getY()][point.getX()] = true);

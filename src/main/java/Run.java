@@ -37,4 +37,5 @@ public class Run {
         window.setLocationRelativeTo(null);
         window.setResizable(true);
     }
+
 }

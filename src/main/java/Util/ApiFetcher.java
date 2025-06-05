@@ -41,7 +41,9 @@ public class ApiFetcher {
             Response response = client.newCall(request).execute();
             String responseBody = response.body().string();
 
+            System.out.println(responseBody);
             JSONArray jsonArray = new JSONArray(responseBody);
+
             List<MazePoint> points = new ArrayList<>();
 
             for (int i = 0; i < jsonArray.length(); i++) {

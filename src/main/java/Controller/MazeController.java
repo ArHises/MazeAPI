@@ -25,6 +25,12 @@ public class MazeController {
 
         List<MazePoint> points = ApiFetcher.fetchMazePoints(WIDTH, HEIGHT);
         System.out.println(points.toArray());
+
+
+        if (points == null){
+            System.err.println("error");
+            points = List.of();
+        }
         this.maze = new Maze(points, WIDTH, HEIGHT);
         this.mazeSolver = new MazeSolver(this.maze);
     }
@@ -43,7 +49,7 @@ public class MazeController {
             for (int x = 0; x < WIDTH; x++) {
                 if (maze.isWhite(x, y)) {
                     g.setColor(Color.WHITE);
-                    g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize); // לבדוק
                 }
             }
         }
@@ -51,9 +57,6 @@ public class MazeController {
         g.dispose(); // משחרר את משאבי הציור
         return img;
     }
-
-
-
 
 
     public BufferedImage getImage() {
